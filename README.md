@@ -5,7 +5,7 @@ A Pytorch version of LPCNet, including dump weight
 - J.-M. Valin, J. Skoglund, [LPCNet: Improving Neural Speech Synthesis Through Linear Prediction](https://jmvalin.ca/papers/lpcnet_icassp2019.pdf), *Proc. International Conference on Acoustics, Speech and Signal Processing (ICASSP)*, arXiv:1810.11846, 2019.
 
 # Download Data
-Use together with this [repo](https://github.com/mozilla/LPCNet).
+Use together with the C code of this [repo](https://github.com/mozilla/LPCNet).
 Suitable training material can be obtained from the [McGill University Telecommunications & Signal Processing Laboratory](http://www-mmsp.ece.mcgill.ca/Documents/Data/).  Download the ISO and extract the 16k-LP7 directory, the src/concat.sh script can be used to generate a headerless file of training samples.
 ```
 cd 16k-LP7
