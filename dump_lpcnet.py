@@ -3,7 +3,10 @@ import torch
 import torch.nn as nn
 from lpcnet import *
 from torch.nn import Embedding, Linear, Conv1d, GRU, Module
+import argparse
 
+parser = argparse.ArgumentParser(description='Dump LPCNet weights')
+parser.add_argument('--load', default='./ckpts/120.pkl', type=str, help='file of state dict')
 
 max_rnn_neurons = 1
 max_conv_inputs = 1
@@ -198,7 +201,7 @@ Embedding.dump_layer = dump_embedding_layer
 
 
 model = torch.nn.DataParallel(LPCNet())
-model.load_state_dict(torch.load('./ckpts/120.pkl', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(args.load, map_location=torch.device('cpu')))
 model = model.cpu()
 net = model.module
 
