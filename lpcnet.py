@@ -111,13 +111,3 @@ class LPCNet(nn.Module):
         zeros2 = torch.zeros(1, bs, self.rnn_units2)
         prob, hid1, hid2 = self.decode(pcm, feat, zeros1, zeros2)
         return prob
-
-
-if __name__ == '__main__':
-    bs = 11
-    pcm   = torch.randint(0, 256, (bs, 2400, 3))
-    feat  = torch.randn(bs, 19, 38)
-    pitch = torch.randint(0, 256, (bs, 19, 1))
-    net = nn.DataParallel(LPCNet()).cuda()
-    out = net(pcm.cuda(), feat.cuda(), pitch.cuda())
-    print(out.softmax(dim=-1))
