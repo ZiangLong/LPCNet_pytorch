@@ -18,9 +18,8 @@ args = parser.parse_args()
 feature_file = args.feat
 out_file = args.file
 
-model = torch.nn.DataParallel(LPCNet())
-model.load_state_dict(torch.load(args.load, map_location=torch.device('cpu')))
 model = torch.nn.DataParallel(LPCNet(mode='test'))
+model.load_state_dict(torch.load(args.load, map_location=torch.device('cpu')))
 model = model.cpu()
 
 
