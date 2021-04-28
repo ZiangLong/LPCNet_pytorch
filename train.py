@@ -34,15 +34,14 @@ def sparsity(net, i):
     net.module.gru1.state_dict()['weight_hh_l0'][:] = p.transpose(1, 0)
 
 def train(net, dataloader, loss, lr=0.001, epochs=120):
-    opt = torch.optim.Adam(net.parameters(), betas=(0.9, 0.99), eps=1e-7)
+    opt = torch.optim.Adam(net.parameters(), betas=(0.9, 0.99), eps=1e-7, lr=lr)
+    scheduler = torch.optim.lr_scheduler.LambdaLR(opt, lr_lambda=lambda it: lr/(1. + 5e-5 * it))
     iteration = 0
     for epoch in range(1, epochs+1):
         print('Epoch:\t'+str(epoch)+'/'+str(epochs))
         total_loss = []
         for i, (pcm, feat, pitch, target) in enumerate(tqdm(dataloader), 1):
             iteration += 1
-            for pg in opt.param_groups:
-                pg['lr'] = lr / (1. + 5e-5 * iteration)
             pcm    = pcm.type(torch.LongTensor).cuda()
             feat   = feat.cuda()
             pitch  = pitch.type(torch.LongTensor).cuda()
@@ -52,11 +51,9 @@ def train(net, dataloader, loss, lr=0.001, epochs=120):
             opt.zero_grad()
             L.backward()
             opt.step()
+            scheduler.step()
             sparsity(net, iteration)
             total_loss.append(L.item())
         avg_loss = sum(total_loss)/len(total_loss)
         print('\nEpoch Loss %.4f' % avg_loss)
         torch.save(net.state_dict(), './ckpts/%03d.pkl' % epoch)
-            
-
-            
