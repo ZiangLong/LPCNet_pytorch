@@ -31,7 +31,7 @@ class MDense(nn.Module):
         y1 = self.fc1(x).tanh()
         y2 = self.fc2(x).tanh()
         p  = self.gamma1 * y1 + self.gamma2 * y2
-        return p
+        return p.sigmoid()
 
 class LPCNet(nn.Module):
     def __init__(self, rnn_units1=384, rnn_units2=16, nb_used_features=38, mode='prepad'):
